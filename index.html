@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Dictation Worksheet</title>
+    <title>Aii Language Center - Dictation Worksheet</title>
     <style>
-        /* --- CSS VARIABLES FOR THEMING --- */
         :root {
             --bg-color: #f4f7f6;
             --paper-color: #ffffff;
@@ -81,8 +80,8 @@
         button:hover { opacity: 0.9; }
         button.print-btn { background-color: var(--success-color); }
         button.theme-btn { background-color: #555; }
+        button#copy-link-btn { background-color: #ff9800; }
         
-        /* Helper class to hide elements */
         .hidden { display: none !important; }
 
         .worksheet-container {
@@ -98,10 +97,32 @@
 
         .header-info {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 30px;
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
+            padding-bottom: 20px;
+            gap: 15px;
+        }
+
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .logo-container img {
+            max-height: 90px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .name-date-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
         }
 
         .input-group { display: flex; flex-direction: column; }
@@ -112,7 +133,6 @@
         }
 
         h2.unit-title { text-align: center; color: var(--primary-color); margin-bottom: 20px; }
-
         .content-text { line-height: 2.2; font-size: 18px; margin-bottom: 40px; }
 
         .blank {
@@ -154,6 +174,7 @@
             .blank { border-bottom: 1px solid #000 !important; color: black !important; font-weight: bold; }
             .input-group input { border-bottom: 1px solid #000 !important; color: black !important; }
             h2.unit-title { color: black !important; }
+            .logo-container img { filter: grayscale(100%) contrast(100%); }
         }
     </style>
 </head>
@@ -161,7 +182,6 @@
 
     <!-- Controls -->
     <div class="controls no-print">
-        <!-- We added an ID to the label/select container to potentially hide it later if needed -->
         <div id="unit-selector-container">
             <label for="unit-select">Select Unit:</label>
             <select id="unit-select"></select>
@@ -170,26 +190,32 @@
         <button onclick="resetWorksheet()">Reset</button>
         <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
         <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button>
-        
-        <!-- New Button: Copy Link -->
-        <button id="copy-link-btn" onclick="copyShareableLink()" style="background-color: #ff9800;">🔗 Copy Share Link</button>
+        <button id="copy-link-btn" onclick="copyShareableLink()">🔗 Copy Share Link</button>
     </div>
 
     <!-- Worksheet -->
     <div class="worksheet-container" id="worksheet">
+        
+        <!-- Header with Logo -->
         <div class="header-info">
-            <div class="input-group">
-                <label>Class Name</label>
-                <input type="text" placeholder="Enter Name">
+            <div class="logo-container">
+                <!-- IMPORTANT: Make sure you uploaded 'logo.png' to your GitHub repo -->
+                <img src="logo.png" alt="Aii Language Center Logo">
             </div>
-            <div class="input-group">
-                <label>Date</label>
-                <input type="text" placeholder="Enter Date">
+            
+            <div class="name-date-row">
+                <div class="input-group">
+                    <label>Class Name</label>
+                    <input type="text" placeholder="Enter Name">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="text" placeholder="Enter Date">
+                </div>
             </div>
         </div>
 
         <h2 class="unit-title" id="unit-title">Loading...</h2>
-        
         <div class="content-text" id="text-content"></div>
 
         <div class="word-bank no-print">
@@ -202,7 +228,6 @@
     </div>
 
     <script>
-        // DATA (From your PDF)
         const units = [
             { id: 1, title: "Unit 1. New Media Art", text: "Art is becoming more and more interesting.{{1}} just looking at a{{2}} of art, you can do much more. You can{{3}} it. In other{{4}}, you become part of the art.<br><br>New technology{{5}} people together with the artists' art. One artist uses computers to control his art. His art is a wall{{6}} robot faces. The robots' eyes open when you{{7}} close to it. Then the eyes follow your{{8}}.<br><br>New media art is unique for{{9}}. Every{{10}} will be different. Like the pieces of art, each one is special.", words: ["Instead of", "piece", "interact with", "words", "brings", "of moving", "get", "movements", "everyone", "experience"] },
             { id: 2, title: "Unit 2. Music in the City", text: "Luke Jerram is{{1}}. He makes art with{{2}}.<br><br>First, he finds a city that{{3}} work with him. A city that wants his art will{{4}} him put pianos on the streets. He puts them in parks, at bus stops, and other places{{5}} people often go.<br><br>Each piano has a{{6}} on it. The sign says, 'Play me,{{7}}.' Any person can play. Many people can become{{8}}. They don't play for money. They just play for{{9}}.<br><br>Since 2008, Jerram has put pianos in{{10}} sixty cities. People in London, New York, and Paris have enjoyed Jerram's art. Maybe street pianos will be in your city soon!", words: ["an artist", "music", "wants to", "let", "where", "sign", "I'm free", "musicians", "fun", "more than"] },
@@ -233,7 +258,6 @@
         const unitSelectorContainer = document.getElementById('unit-selector-container');
 
         function init() {
-            // Populate Dropdown
             units.forEach(unit => {
                 const option = document.createElement('option');
                 option.value = unit.id;
@@ -241,28 +265,22 @@
                 unitSelect.appendChild(option);
             });
 
-            // Check URL for ?unit=X
             const urlParams = new URLSearchParams(window.location.search);
             const unitParam = urlParams.get('unit');
 
             if (unitParam) {
                 const parsedUnit = parseInt(unitParam);
                 if (parsedUnit >= 1 && parsedUnit <= 16) {
-                    // Load specific unit
                     loadUnit(parsedUnit);
-                    // Update dropdown to match
                     unitSelect.value = parsedUnit;
-                    // Hide the selector so students can't change it
                     unitSelectorContainer.classList.add('hidden');
                 } else {
-                    loadUnit(1); // Fallback
+                    loadUnit(1);
                 }
             } else {
-                // Default load
                 loadUnit(1);
             }
 
-            // Listen for manual changes (only if selector is visible)
             unitSelect.addEventListener('change', (e) => {
                 const newId = parseInt(e.target.value);
                 loadUnit(newId);
@@ -271,7 +289,6 @@
         }
 
         function updateURL(id) {
-            // Updates the browser URL without reloading
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + "?unit=" + id;
             window.history.pushState({ path: newUrl }, '', newUrl);
         }
@@ -346,10 +363,9 @@
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            themeToggleBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+            themeToggleBtn.textContent = isDark ? "☀️ Light Mode" : " Dark Mode";
         }
 
-        // NEW FUNCTION: Copy Shareable Link
         function copyShareableLink() {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
