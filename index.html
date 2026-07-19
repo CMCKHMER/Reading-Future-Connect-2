@@ -6,69 +6,67 @@
     <title>Aii Language Center - Dictation Worksheet</title>
     <style>
         :root {
-            --bg-color: #f4f7f6;
+            --bg-color: #f0f2f5;
             --paper-color: #ffffff;
-            --text-color: #333333;
-            --primary-color: #4a90e2;
-            --secondary-color: #f9f9f9;
-            --border-color: #ddd;
-            --highlight-color: #e3f2fd;
-            --success-color: #2ecc71;
-            --locked-text: #2c3e50;
-            --shadow: 0 2px 5px rgba(0,0,0,0.1);
-            --input-border: #333;
-            --frame-color: #003355; /* Matches Aii brand color */
+            --text-color: #2c3e50;
+            --primary-color: #003355; /* Aii Brand Navy */
+            --accent-color: #4a90e2;
+            --border-color: #bdc3c7;
+            --frame-bg: #f8f9fa;
+            --success-color: #27ae60;
+            --shadow-light: 0 2px 8px rgba(0,0,0,0.08);
+            --font-main: 'Georgia', 'Times New Roman', serif;
+            --font-ui: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body.dark-mode {
-            --bg-color: #1e1e1e;
+            --bg-color: #1a1a1a;
             --paper-color: #2d2d2d;
-            --text-color: #e0e0e0;
+            --text-color: #ecf0f1;
             --primary-color: #64b5f6;
-            --secondary-color: #383838;
+            --accent-color: #90caf9;
             --border-color: #555;
-            --highlight-color: #37474f;
+            --frame-bg: #383838;
             --success-color: #81c784;
-            --locked-text: #ffffff;
-            --shadow: 0 2px 5px rgba(0,0,0,0.5);
-            --input-border: #aaa;
-            --frame-color: #64b5f6;
+            --shadow-light: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-ui);
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             transition: background-color 0.3s, color 0.3s;
         }
 
+        /* --- CONTROLS BAR --- */
         .controls {
             background: var(--paper-color);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: var(--shadow-light);
+            margin-bottom: 25px;
             width: 100%;
             max-width: 800px;
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
-            transition: background-color 0.3s;
+            border: 1px solid var(--border-color);
         }
 
         select, button, input {
-            padding: 10px;
+            padding: 8px 12px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 14px;
             background-color: var(--paper-color);
             color: var(--text-color);
+            font-family: var(--font-ui);
         }
 
         button {
@@ -76,13 +74,16 @@
             color: white;
             border: none;
             cursor: pointer;
-            transition: opacity 0.3s;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s, transform 0.1s;
         }
 
         button:hover { opacity: 0.9; }
+        button:active { transform: scale(0.98); }
         button.print-btn { background-color: var(--success-color); }
         button.theme-btn { background-color: #555; }
-        button#copy-link-btn { background-color: #ff9800; }
+        button#copy-link-btn { background-color: #e67e22; }
         
         .hidden { display: none !important; }
 
@@ -91,117 +92,230 @@
             background: var(--paper-color);
             width: 100%;
             max-width: 800px;
-            padding: 0; /* Removed inner padding to let frame touch edges */
-            box-shadow: var(--shadow);
-            min-height: 900px; /* Increased height for footer space */
+            padding: 0;
+            box-shadow: var(--shadow-light);
+            min-height: 950px;
             position: relative;
-            border: 1px solid var(--frame-color); /* THIN FRAME AROUND ENTIRE SHEET */
-            transition: background-color 0.3s, box-shadow 0.3s;
+            border: 2px solid var(--primary-color); /* Outer Professional Frame */
             display: flex;
             flex-direction: column;
         }
 
-        /* --- HEADER AREA WITH THIN FRAME --- */
+        /* --- HEADER AREA WITH 3D TYPOGRAPHY --- */
         .header-area {
-            border-bottom: 1px solid var(--frame-color); /* THIN BOTTOM FRAME FOR HEADER */
-            padding: 30px 40px 20px 40px;
+            border-bottom: 2px solid var(--primary-color);
+            padding: 35px 40px 25px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            background: linear-gradient(to bottom, var(--paper-color), var(--frame-bg));
         }
 
-        .logo-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
+        /* FANCY BOLD 3D TEXT LOGO */
+        .brand-title {
+            font-family: var(--font-main);
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-align: center;
+            margin: 0;
+            line-height: 1.1;
+            /* Layered text-shadow for 3D embossed effect */
+            text-shadow: 
+                1px 1px 0px rgba(255,255,255,0.4),
+                2px 2px 0px rgba(0,0,0,0.1),
+                3px 3px 0px rgba(0,0,0,0.1),
+                4px 4px 0px rgba(0,0,0,0.1),
+                5px 5px 8px rgba(0,0,0,0.2);
+            letter-spacing: -0.5px;
         }
 
-        .logo-container img {
-            max-height: 80px;
-            width: auto;
-            object-fit: contain;
+        .subtitle {
+            font-family: var(--font-ui);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: -5px;
         }
 
+        /* FRAMED NAME/DATE INPUTS */
         .name-date-row {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            max-width: 600px;
+            max-width: 550px;
             margin-top: 10px;
         }
 
-        .input-group { display: flex; flex-direction: column; }
-        .input-group label { font-size: 12px; color: var(--text-color); opacity: 0.8; margin-bottom: 5px; font-weight: bold; }
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+            width: 48%;
+        }
+        
+        .input-group label { 
+            font-size: 11px; 
+            color: var(--text-color); 
+            opacity: 0.8; 
+            margin-bottom: 6px; 
+            font-weight: 700; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
         .input-group input {
-            border: none; border-bottom: 1px solid var(--input-border); border-radius: 0;
-            width: 200px; font-size: 18px; background: transparent; color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-size: 16px;
+            background: var(--paper-color);
+            color: var(--text-color);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Inset frame look */
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        /* --- CONTENT AREA (SPACED FROM HEADER) --- */
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05), 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        /* --- CONTENT AREA --- */
         .content-area {
-            padding: 40px 40px 20px 40px; /* TOP PADDING CREATES SPACE BELOW HEADER */
+            padding: 45px 50px 30px 50px;
             flex-grow: 1;
         }
 
         h2.unit-title { 
             text-align: center; 
             color: var(--primary-color); 
-            margin-bottom: 30px; /* EXTRA SPACE BEFORE TEXT STARTS */
-            font-size: 22px;
+            margin-bottom: 35px;
+            font-family: var(--font-main);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            display: inline-block;
+            width: 100%;
         }
 
         .content-text { 
-            line-height: 2.4; /* INCREASED LINE HEIGHT FOR BETTER READING */
-            font-size: 18px; 
+            line-height: 2.6; /* Generous spacing for readability */
+            font-size: 19px; 
             margin-bottom: 40px; 
-            text-align: justify; /* MAKES TEXT LOOK MORE LIKE A PRINTED DOCUMENT */
+            text-align: justify;
+            font-family: var(--font-main);
+            color: var(--text-color);
         }
 
+        /* FRAMED BLANK LINES */
         .blank {
-            display: inline-block; min-width: 100px; border-bottom: 1px dashed var(--border-color);
-            text-align: center; padding: 2px 8px; margin: 0 4px; vertical-align: bottom;
-            transition: all 0.2s; color: transparent; cursor: pointer;
+            display: inline-block; 
+            min-width: 110px; 
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            text-align: center; 
+            padding: 3px 12px; 
+            margin: 0 4px; 
+            vertical-align: baseline;
+            background-color: var(--frame-bg);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            transition: all 0.2s; 
+            color: transparent; 
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: 600;
         }
-        .blank:hover { background-color: var(--highlight-color); border-bottom-color: var(--primary-color); }
-        .blank.filled { border-bottom: 1px solid var(--success-color); color: var(--locked-text); font-weight: bold; }
+        
+        .blank:hover { 
+            background-color: #e8f4fd; 
+            border-color: var(--accent-color); 
+        }
+        
+        .blank.filled { 
+            border: 1px solid var(--success-color); 
+            background-color: rgba(39, 174, 96, 0.08);
+            color: var(--text-color); 
+            box-shadow: inset 0 1px 2px rgba(39, 174, 96, 0.1);
+        }
 
         /* --- WORD BANK --- */
         .word-bank {
-            background-color: var(--secondary-color); border: 1px dashed var(--border-color);
-            padding: 20px; border-radius: 4px; margin-top: 30px; transition: background-color 0.3s;
+            background-color: var(--frame-bg); 
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 20px; 
+            margin-top: 30px;
         }
-        .word-bank h3 { margin-top: 0; font-size: 14px; color: var(--text-color); opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .word-bank h3 { 
+            margin-top: 0; 
+            font-size: 13px; 
+            color: var(--text-color); 
+            opacity: 0.7; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            margin-bottom: 12px;
+        }
+        
         .words-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 
         .word-chip {
-            background: var(--paper-color); border: 1px solid var(--border-color);
-            padding: 8px 14px; border-radius: 16px; cursor: pointer; user-select: none;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-weight: 500; transition: all 0.2s; color: var(--text-color);
-            font-size: 15px;
+            background: var(--paper-color); 
+            border: 1px solid var(--border-color);
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            cursor: pointer; 
+            user-select: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+            font-weight: 600; 
+            transition: all 0.2s; 
+            color: var(--text-color);
+            font-size: 14px;
         }
-        .word-chip:hover { transform: translateY(-2px); border-color: var(--primary-color); }
+        
+        .word-chip:hover { 
+            transform: translateY(-2px); 
+            border-color: var(--primary-color);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        
         .word-chip.selected {
-            background-color: var(--primary-color); color: white; border-color: var(--primary-color);
-            transform: scale(1.05); box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+            background-color: var(--primary-color); 
+            color: white; 
+            border-color: var(--primary-color);
+            transform: scale(1.05); 
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
         }
+        
         .word-chip.used {
-            opacity: 0.3; pointer-events: none; text-decoration: line-through;
-            background-color: var(--secondary-color); border-color: var(--border-color);
-            transform: none; box-shadow: none;
+            opacity: 0.3; 
+            pointer-events: none; 
+            text-decoration: line-through;
+            background-color: var(--frame-bg); 
+            border-color: var(--border-color);
+            transform: none; 
+            box-shadow: none;
         }
 
-        /* --- FOOTER AREA WITH THIN FRAME --- */
+        /* --- FOOTER AREA --- */
         .footer-area {
-            border-top: 1px solid var(--frame-color); /* THIN TOP FRAME FOR FOOTER */
-            padding: 20px 40px;
+            border-top: 2px solid var(--primary-color);
+            padding: 18px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
             color: var(--text-color);
-            opacity: 0.7;
-            margin-top: auto; /* PUSHES FOOTER TO BOTTOM */
+            opacity: 0.6;
+            margin-top: auto;
+            font-family: var(--font-ui);
+            letter-spacing: 0.5px;
         }
 
         @media print {
@@ -210,18 +324,29 @@
             .controls, .word-bank, .no-print { display: none !important; }
             .worksheet-container { 
                 box-shadow: none !important; 
-                border: 1px solid #000 !important; /* KEEP FRAME WHEN PRINTING */
+                border: 2px solid #000 !important;
                 width: 100% !important; max-width: 100% !important; 
                 background: white !important; color: black !important;
                 min-height: auto !important;
             }
-            .header-area { border-bottom: 1px solid #000 !important; padding: 20px 30px 15px 30px !important; }
-            .footer-area { border-top: 1px solid #000 !important; padding: 15px 30px !important; }
+            .header-area { border-bottom: 2px solid #000 !important; padding: 25px 30px 20px 30px !important; background: white !important; }
+            .brand-title { text-shadow: none !important; color: #000 !important; }
+            .footer-area { border-top: 2px solid #000 !important; padding: 15px 30px !important; }
             .content-area { padding: 30px 30px 10px 30px !important; }
-            .blank { border-bottom: 1px solid #000 !important; color: black !important; font-weight: bold; }
-            .input-group input { border-bottom: 1px solid #000 !important; color: black !important; }
-            h2.unit-title { color: black !important; }
-            .logo-container img { filter: grayscale(100%) contrast(100%); }
+            .blank { 
+                border: 1px solid #000 !important; 
+                background: white !important;
+                color: black !important; 
+                font-weight: bold;
+                box-shadow: none !important;
+            }
+            .input-group input { 
+                border: 1px solid #000 !important; 
+                color: black !important;
+                background: white !important;
+                box-shadow: none !important;
+            }
+            h2.unit-title { color: black !important; border-bottom-color: #000 !important; }
         }
     </style>
 </head>
@@ -243,12 +368,10 @@
     <!-- Worksheet with Frame -->
     <div class="worksheet-container" id="worksheet">
         
-        <!-- HEADER AREA -->
+        <!-- HEADER AREA WITH 3D TEXT -->
         <div class="header-area">
-            <div class="logo-container">
-                <!-- IMPORTANT: Ensure 'logo.png' is uploaded to GitHub with EXACT casing -->
-                <img src="logo.png" alt="Aii Language Center Logo">
-            </div>
+            <h1 class="brand-title">Aii Language Center</h1>
+            <div class="subtitle">Homework</div>
             
             <div class="name-date-row">
                 <div class="input-group">
@@ -262,7 +385,7 @@
             </div>
         </div>
 
-        <!-- CONTENT AREA (Spaced from header) -->
+        <!-- CONTENT AREA -->
         <div class="content-area">
             <h2 class="unit-title" id="unit-title">Loading...</h2>
             <div class="content-text" id="text-content"></div>
@@ -270,8 +393,8 @@
             <div class="word-bank no-print">
                 <h3>Word Bank</h3>
                 <div class="words-grid" id="word-bank-grid"></div>
-                <p style="font-size: 11px; color: var(--text-color); opacity: 0.6; margin-top: 8px;">
-                    <em>Click a word to select it, then click a blank line to fill it.</em>
+                <p style="font-size: 11px; color: var(--text-color); opacity: 0.6; margin-top: 10px; font-style: italic;">
+                    Click a word to select it, then click a framed blank to insert it.
                 </p>
             </div>
         </div>
@@ -355,8 +478,6 @@
             const unit = units.find(u => u.id === id);
             unitTitle.textContent = unit.title;
             selectedWordElement = null;
-
-            // Update footer page indicator
             pageIndicator.textContent = `Unit ${id} of ${units.length}`;
 
             let html = unit.text.replace(/\{\{(\d+)\}\}/g, '<span class="blank" data-index="$1"></span>');
@@ -423,7 +544,7 @@
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            themeToggleBtn.textContent = isDark ? "️ Light Mode" : "🌙 Dark Mode";
+            themeToggleBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
         }
 
         function copyShareableLink() {
@@ -436,7 +557,7 @@
                 
                 setTimeout(() => {
                     btn.textContent = originalText;
-                    btn.style.backgroundColor = "#ff9800";
+                    btn.style.backgroundColor = "#e67e22";
                 }, 2000);
             }).catch(err => {
                 alert("Failed to copy link. Please copy manually from the address bar.");
