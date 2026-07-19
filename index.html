@@ -17,6 +17,7 @@
             --locked-text: #2c3e50;
             --shadow: 0 2px 5px rgba(0,0,0,0.1);
             --input-border: #333;
+            --frame-color: #003355; /* Matches Aii brand color */
         }
 
         body.dark-mode {
@@ -31,6 +32,7 @@
             --locked-text: #ffffff;
             --shadow: 0 2px 5px rgba(0,0,0,0.5);
             --input-border: #aaa;
+            --frame-color: #64b5f6;
         }
 
         body {
@@ -84,24 +86,28 @@
         
         .hidden { display: none !important; }
 
+        /* --- MAIN WORKSHEET FRAME --- */
         .worksheet-container {
             background: var(--paper-color);
             width: 100%;
             max-width: 800px;
-            padding: 40px;
+            padding: 0; /* Removed inner padding to let frame touch edges */
             box-shadow: var(--shadow);
-            min-height: 800px;
+            min-height: 900px; /* Increased height for footer space */
             position: relative;
+            border: 1px solid var(--frame-color); /* THIN FRAME AROUND ENTIRE SHEET */
             transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
-        .header-info {
+        /* --- HEADER AREA WITH THIN FRAME --- */
+        .header-area {
+            border-bottom: 1px solid var(--frame-color); /* THIN BOTTOM FRAME FOR HEADER */
+            padding: 30px 40px 20px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 20px;
             gap: 15px;
         }
 
@@ -109,11 +115,10 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 10px;
         }
 
         .logo-container img {
-            max-height: 90px;
+            max-height: 80px;
             width: auto;
             object-fit: contain;
         }
@@ -123,42 +128,62 @@
             justify-content: space-between;
             width: 100%;
             max-width: 600px;
+            margin-top: 10px;
         }
 
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-size: 12px; color: var(--text-color); opacity: 0.8; margin-bottom: 5px; font-weight: bold; }
         .input-group input {
-            border: none; border-bottom: 2px solid var(--input-border); border-radius: 0;
+            border: none; border-bottom: 1px solid var(--input-border); border-radius: 0;
             width: 200px; font-size: 18px; background: transparent; color: var(--text-color);
         }
 
-        h2.unit-title { text-align: center; color: var(--primary-color); margin-bottom: 20px; }
-        .content-text { line-height: 2.2; font-size: 18px; margin-bottom: 40px; }
+        /* --- CONTENT AREA (SPACED FROM HEADER) --- */
+        .content-area {
+            padding: 40px 40px 20px 40px; /* TOP PADDING CREATES SPACE BELOW HEADER */
+            flex-grow: 1;
+        }
+
+        h2.unit-title { 
+            text-align: center; 
+            color: var(--primary-color); 
+            margin-bottom: 30px; /* EXTRA SPACE BEFORE TEXT STARTS */
+            font-size: 22px;
+        }
+
+        .content-text { 
+            line-height: 2.4; /* INCREASED LINE HEIGHT FOR BETTER READING */
+            font-size: 18px; 
+            margin-bottom: 40px; 
+            text-align: justify; /* MAKES TEXT LOOK MORE LIKE A PRINTED DOCUMENT */
+        }
 
         .blank {
-            display: inline-block; min-width: 100px; border-bottom: 2px dashed var(--border-color);
-            text-align: center; padding: 2px 10px; margin: 0 5px; vertical-align: bottom;
+            display: inline-block; min-width: 100px; border-bottom: 1px dashed var(--border-color);
+            text-align: center; padding: 2px 8px; margin: 0 4px; vertical-align: bottom;
             transition: all 0.2s; color: transparent; cursor: pointer;
         }
         .blank:hover { background-color: var(--highlight-color); border-bottom-color: var(--primary-color); }
-        .blank.filled { border-bottom: 2px solid var(--success-color); color: var(--locked-text); font-weight: bold; }
+        .blank.filled { border-bottom: 1px solid var(--success-color); color: var(--locked-text); font-weight: bold; }
 
+        /* --- WORD BANK --- */
         .word-bank {
-            background-color: var(--secondary-color); border: 2px dashed var(--border-color);
-            padding: 20px; border-radius: 8px; margin-top: 20px; transition: background-color 0.3s;
+            background-color: var(--secondary-color); border: 1px dashed var(--border-color);
+            padding: 20px; border-radius: 4px; margin-top: 30px; transition: background-color 0.3s;
         }
-        .word-bank h3 { margin-top: 0; font-size: 16px; color: var(--text-color); opacity: 0.8; text-transform: uppercase; }
-        .words-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .word-bank h3 { margin-top: 0; font-size: 14px; color: var(--text-color); opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+        .words-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 
         .word-chip {
-            background: var(--paper-color); border: 2px solid var(--border-color);
-            padding: 10px 15px; border-radius: 20px; cursor: pointer; user-select: none;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.05); font-weight: 500; transition: all 0.2s; color: var(--text-color);
+            background: var(--paper-color); border: 1px solid var(--border-color);
+            padding: 8px 14px; border-radius: 16px; cursor: pointer; user-select: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-weight: 500; transition: all 0.2s; color: var(--text-color);
+            font-size: 15px;
         }
         .word-chip:hover { transform: translateY(-2px); border-color: var(--primary-color); }
         .word-chip.selected {
             background-color: var(--primary-color); color: white; border-color: var(--primary-color);
-            transform: scale(1.05); box-shadow: 0 0 10px rgba(74, 144, 226, 0.4);
+            transform: scale(1.05); box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
         }
         .word-chip.used {
             opacity: 0.3; pointer-events: none; text-decoration: line-through;
@@ -166,11 +191,33 @@
             transform: none; box-shadow: none;
         }
 
+        /* --- FOOTER AREA WITH THIN FRAME --- */
+        .footer-area {
+            border-top: 1px solid var(--frame-color); /* THIN TOP FRAME FOR FOOTER */
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-color);
+            opacity: 0.7;
+            margin-top: auto; /* PUSHES FOOTER TO BOTTOM */
+        }
+
         @media print {
-            @page { margin: 1cm; }
+            @page { margin: 0.5cm; size: A4; }
             body { background: white !important; color: black !important; padding: 0; -webkit-print-color-adjust: exact; }
             .controls, .word-bank, .no-print { display: none !important; }
-            .worksheet-container { box-shadow: none !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; border: none !important; background: white !important; color: black !important; }
+            .worksheet-container { 
+                box-shadow: none !important; 
+                border: 1px solid #000 !important; /* KEEP FRAME WHEN PRINTING */
+                width: 100% !important; max-width: 100% !important; 
+                background: white !important; color: black !important;
+                min-height: auto !important;
+            }
+            .header-area { border-bottom: 1px solid #000 !important; padding: 20px 30px 15px 30px !important; }
+            .footer-area { border-top: 1px solid #000 !important; padding: 15px 30px !important; }
+            .content-area { padding: 30px 30px 10px 30px !important; }
             .blank { border-bottom: 1px solid #000 !important; color: black !important; font-weight: bold; }
             .input-group input { border-bottom: 1px solid #000 !important; color: black !important; }
             h2.unit-title { color: black !important; }
@@ -193,14 +240,14 @@
         <button id="copy-link-btn" onclick="copyShareableLink()">🔗 Copy Share Link</button>
     </div>
 
-    <!-- Worksheet -->
+    <!-- Worksheet with Frame -->
     <div class="worksheet-container" id="worksheet">
         
-        <!-- Header with Logo -->
-        <div class="header-info">
+        <!-- HEADER AREA -->
+        <div class="header-area">
             <div class="logo-container">
-                <!-- Aii Language Center Logo in top center banner area -->
-                <img src="aiilanguagecenter.jpg" alt="Aii Language Center Logo">
+                <!-- IMPORTANT: Ensure 'logo.png' is uploaded to GitHub with EXACT casing -->
+                <img src="logo.png" alt="Aii Language Center Logo">
             </div>
             
             <div class="name-date-row">
@@ -215,36 +262,45 @@
             </div>
         </div>
 
-        <h2 class="unit-title" id="unit-title">Loading...</h2>
-        <div class="content-text" id="text-content"></div>
+        <!-- CONTENT AREA (Spaced from header) -->
+        <div class="content-area">
+            <h2 class="unit-title" id="unit-title">Loading...</h2>
+            <div class="content-text" id="text-content"></div>
 
-        <div class="word-bank no-print">
-            <h3>Word Bank</h3>
-            <div class="words-grid" id="word-bank-grid"></div>
-            <p style="font-size: 12px; color: var(--text-color); opacity: 0.7; margin-top: 10px;">
-                <em>Tip: Click a word to select it (blue), then click a blank line to fill it.</em>
-            </p>
+            <div class="word-bank no-print">
+                <h3>Word Bank</h3>
+                <div class="words-grid" id="word-bank-grid"></div>
+                <p style="font-size: 11px; color: var(--text-color); opacity: 0.6; margin-top: 8px;">
+                    <em>Click a word to select it, then click a blank line to fill it.</em>
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER AREA -->
+        <div class="footer-area">
+            <span>Aii Language Center • Dictation Practice</span>
+            <span id="page-indicator">Unit 1 of 16</span>
         </div>
     </div>
 
     <script>
         const units = [
-            { id: 1, title: "Unit 1. New Media Art", text: "Art is becoming more and more interesting.{{1}} just looking at a{{2}} of art, you can do much more. You can{{3}} it. In other{{4}}, you can walk inside an art{{5}} and experience the art in a special way. Luke Jerram is an artist. He makes art with soap bubbles. His art uses modern technology.{{6}} of his bubbles is fifteen meters{{7}}!", words: ["Instead", "piece", "move", "words", "museum", "One", "high"] },
-            { id: 2, title: "Unit 2. Music in the City", text: "Luke Jerram is{{1}}. He makes art with{{2}}.<br><br>First, he finds a city that {{3}} work with him. A city that wants his art will {{4}} him. Then, Jerram works with people from the city.{{5}} year, he makes a new kind of {{6}}. It is always a {{7}} to the city. Now his bubble art is {{8}} around the world.", words: ["also", "soap", "wants", "help", "Every", "art", "gift", "traveling"] },
-            { id: 3, title: "Unit 3. Online Guitar Lessons", text: "Take guitar lessons online! There are many{{1}} to do this. You can take online lessons any time. Online lessons can start in the {{2}} in the morning or in the {{3}} at night. You can also {{4}} a lot of money. Private guitar lessons are usually very {{5}}. But online lessons are much {{6}}. You can take one lesson, two lessons, or many {{7}}. It is up to {{8}}.", words: ["ways", "early", "evening", "save", "expensive", "cheaper", "lessons", "you"] },
-            { id: 4, title: "Unit 4. Twyla Tharp", text: "In the 1960s, Twyla Tharp studied{{1}} and modern dance in New York. In 1965, Tharp decided to open her{{2}} dance school. Dancers in her school learned {{3}} dance. But Tharp wanted something {{4}}. One day, Tharp had an{{5}}. She decided to{{6}} classical dance with jazz dance. This new {{7}} was very {{8}}.", words: ["ballet", "own", "classical", "different", "idea", "mix", "dance", "interesting"] },
-            { id: 5, title: "Unit 5. DNA from Extinct Animals", text: "{{1}} you like to see extinct animals{{2}} Earth again? Some{{3}} want to bring some extinct animals back to life. One of the most famous projects is bringing back the woolly{{4}}. The woolly mammoth died thousands of years ago. Scientists have found frozen woolly mammoth hair. This hair has{{5}}. Scientists can use the DNA to bring the mammoth{{6}} to life. But bringing back an extinct animal is very {{7}}. It takes time and a lot of{{8}}.", words: ["Would", "on", "scientists", "mammoth", "DNA", "back", "difficult", "money"] },
-            { id: 6, title: "Unit 6. The Clever Octopus", text: "The octopus is a very{{1}} creature.{{2}} similar-sized animals, the octopus has a very big brain. It uses its big brain to do clever{{3}}. Octopuses can open coconut shells. They can also {{4}} other animals to their caves. In the{{5}}, octopuses are very {{6}}. The octopus can change the color and {{7}} of its skin to hide from{{8}}.", words: ["intelligent", "Compared", "things", "pull", "ocean", "curious", "texture", "danger"] },
-            { id: 7, title: "Unit 7. How a Frog Grows", text: "The{{1}} of a frog has four{{2}}. It{{3}} with an egg.<br><br>In the spring, a mother frog{{4}} eggs in a pond. She lays{{5}} 4,000 eggs!{{6}} the eggs hatch, baby frogs called{{7}} come out. The tadpoles look like fish. They have{{8}} and tails. After about 8 weeks, the tadpoles grow{{9}}. Soon, they look like small {{10}}. After three months, the young frogs can live on{{11}}.", words: ["life", "stages", "starts", "lays", "about", "When", "tadpoles", "gills", "legs", "frogs", "land"] },
-            { id: 8, title: "Unit 8. Snake Skin", text: "When an animal{{1}} their old skin or hair, it is called{{2}}. The way snakes shed their skin is unique.<br><br>Snakes{{3}} all their lives. They never stop growing! When a snake gets too big, its{{4}} gets too tight. The old skin{{5}} dry. The snake rubs against{{6}} and rocks to get rid of the old{{7}}. The old skin falls off like a sock. A new skin is{{8}} under the old skin!", words: ["sheds", "shedding", "grow", "skin", "becomes", "rocks", "skin", "growing"] },
-            { id: 9, title: "Unit 9. Smart Glasses for the Blind", text: "Smart glasses have small computers in them. They tell people about what is{{1}} them. Soon, blind people will be{{2}} buy smart glasses. These glasses can{{3}} objects. They can recognize letters and {{4}}. Smart glasses can also give blind people{{5}}. The glasses can give directions to help them get to{{6}} they want to {{7}}. Technology like this will help blind people {{8}} their daily lives.", words: ["around", "able", "recognize", "words", "directions", "where", "go", "with"] },
-            { id: 10, title: "Unit 10. Reading with Your Fingers", text: "{{1}}, we read{{2}}. However, not everybody reads this way.<br><br>{{3}} letters, some people read{{4}} dots. This is called Braille. Blind people can read Braille by {{5}} the dots with their fingers. Each pattern of{{6}} represents a different{{7}}. Braille was invented by a blind person named Louis Braille. He created{{8}} system when he was only 15 years old.", words: ["Today", "with", "Instead", "of", "raised", "dots", "letter", "the"] },
-            { id: 11, title: "Unit 11. Stevie Wonder", text: "Stevie Wonder is a famous{{1}}. He sings, writes music, and plays the piano and many other{{2}}. He said that{{3}} blind is not a problem. He became blind when he was a baby. However, Wonder did not let his blindness stop{{4}}. He continued to study music. He became a great musician. Today, many people {{5}} Stevie Wonder. They know his music. They also respect{{6}} because he did not let his problems stop {{7}}. Stevie Wonder{{8}} shows that blind people can do anything.", words: ["musician", "instruments", "being", "him", "love", "him", "him", "truly"] },
-            { id: 12, title: "Unit 12. Helen Keller", text: "Helen Keller was{{1}} in 1880. When she was a baby, Helen got very{{2}}. She became both{{3}} and blind.{{4}}, life was not easy for Helen. She could not communicate with people around her. Her family{{5}} an amazing teacher named Annie Sullivan. Annie taught Helen how to {{6}} by putting letters in her{{7}}. Helen learned very {{8}}. Soon she could communicate. She went to college and became a famous{{9}} and {{10}}.", words: ["born", "sick", "deaf", "Life", "hired", "read", "hand", "quickly", "writer", "speaker"] },
-            { id: 13, title: "Unit 13. 3D Food Printing", text: "3D food printing is a new way to make food. It is fast and easy.<br><br>Cooking can{{1}} a lot of time and{{2}}. 3D food printers can {{3}} food quickly. The printer puts food into a machine. The machine has{{4}}. Then, the machine pushes the food out of the nozzles. The food comes out in special{{5}}. The food can look like anything! You can make it look like a {{6}}, a flower, or anything you want. 3D food printing is still very new, but maybe one day you will {{7}} food{{8}} with a 3D printer.", words: ["take", "effort", "make", "nozzles", "shapes", "heart", "eat", "made"] },
-            { id: 14, title: "Unit 14. Microwave Popcorn", text: "{{1}} you need to make microwave popcorn{{2}}.<br><br>You need a paper bag. It{{3}} not need to be a special bag. A{{4}} brown paper bag will work. Put the popcorn inside the{{5}}. Then, you need a small piece of paper. You {{6}} a small piece of paper. The paper should have a small amount of {{7}}. You need just a little{{8}}.<br><br>Put the oil-covered paper in the bag with the popcorn. Then, close the top{{9}} the bag. Put the bag in the microwave. When you hear the popcorn pop, you know it{{10}} done.", words: ["All", "well", "does", "simple", "bag", "need", "oil", "bit", "of", "is"] },
-            { id: 15, title: "Unit 15. How a Factory Makes Food", text: "People all{{1}} love potato chips. Let's learn about how a plain potato{{2}} into crunchy chips.<br><br>After farmers{{3}} potatoes, the potatoes go to a factory. At the factory, workers{{4}} the potatoes. Workers cut potatoes into{{5}} slices. Then, the slices go into hot oil. The oil makes them crispy. After they{{6}} crispy, workers put the chips into bags. But wait! The bags are not full of just chips. There is also a {{7}} inside. The gas is nitrogen. Nitrogen gas keeps the chips fresh and{{8}}.", words: ["around", "turns", "harvest", "wash", "thin", "become", "special", "crispy"] },
-            { id: 16, title: "Unit 16. Number Cakes", text: "Old cookbooks show us when different foods were{{1}}. This is{{2}} know that the first cupcakes were{{3}} 1800.<br><br>Some cookbooks show us that the first number-shaped cakes appeared in{{4}} 1980s. These cakes are not new. Bakers{{5}} make number cakes for birthdays. People like them because they look special. Now, making number cakes is{{6}} popular hobby for people at home. Many{{7}} online share their recipes. A number cake can be for someone's{{8}} birthday. Some people make big ones for{{9}}. The best part is that the number cake is{{10}} a cake—you can eat it!", words: ["invented", "interesting", "around", "the", "still", "a", "websites", "each", "parties", "not"] },
+            { id: 1, title: "Unit 1. New Media Art", text: "Art is becoming more and more interesting.{{1}} just looking at a{{2}} of art, you can do much more. You can{{3}} it. In other{{4}}, you become part of the art.<br><br>New technology{{5}} people together with the artists' art. One artist uses computers to control his art. His art is a wall{{6}} robot faces. The robots' eyes open when you{{7}} close to it. Then the eyes follow your{{8}}.<br><br>New media art is unique for{{9}}. Every{{10}} will be different. Like the pieces of art, each one is special.", words: ["Instead of", "piece", "interact with", "words", "brings", "of moving", "get", "movements", "everyone", "experience"] },
+            { id: 2, title: "Unit 2. Music in the City", text: "Luke Jerram is{{1}}. He makes art with{{2}}.<br><br>First, he finds a city that{{3}} work with him. A city that wants his art will{{4}} him put pianos on the streets. He puts them in parks, at bus stops, and other places{{5}} people often go.<br><br>Each piano has a{{6}} on it. The sign says, 'Play me,{{7}}.' Any person can play. Many people can become{{8}}. They don't play for money. They just play for{{9}}.<br><br>Since 2008, Jerram has put pianos in{{10}} sixty cities. People in London, New York, and Paris have enjoyed Jerram's art. Maybe street pianos will be in your city soon!", words: ["an artist", "music", "wants to", "let", "where", "sign", "I'm free", "musicians", "fun", "more than"] },
+            { id: 3, title: "Unit 3. Online Guitar Lessons", text: "Take guitar lessons online! There are many{{1}} to do this. You can take online lessons any time. Online lessons can start in the morning or{{2}},{{3}} you want. You can easily{{4}} or change the time of your lesson if you{{5}}.<br><br>Online lessons can also save money.{{6}} lessons can cost from $25 to $50 for each hour. Online classes often cost $50 for a{{7}} course. A course{{8}} ten or more lessons. And some online lessons are free!<br><br>You can also{{9}} through online lessons. No one will be watching you practice. Many students feel less{{10}} when there is no one watching them.", words: ["ways", "at night", "whenever", "cancel", "need to", "Face-to-face", "whole", "includes", "practice alone", "nervous"] },
+            { id: 4, title: "Unit 4. Twyla Tharp", text: "In the 1960s, Twyla Tharp studied{{1}} and modern dance in New York. In 1965, Tharp decided to open her{{2}} dance school. Dancers in her school{{3}} ballet and natural movement. For example, the dancers ran, walked, and skipped{{4}} they danced.<br><br>Tharp worked very hard. Many people liked her new{{5}} dancing. Tharp became famous because of it. A lot of dancers wanted to{{6}} from her.<br><br>{{7}} 70s, Tharp{{8}} works with dancers. She has created dances for{{9}}, movies, and television. Some of her most famous dances{{10}} by ballet schools around the world.", words: ["ballet", "own", "mixed", "while", "way of", "learn", "In the", "still", "theaters", "are performed"] },
+            { id: 5, title: "Unit 5. DNA from Extinct Animals", text: "{{1}} you like to see extinct animals{{2}} Earth again? Some{{3}} want to bring some extinct animals back to life. One of the animals is the woolly mammoth, a{{4}} of today's elephants.<br><br>{{5}}, a woolly mammoth's body{{6}} in Siberia. Scientists are studying the animal's DNA. They want to use the DNA to make a{{7}} of the animal.<br><br>First, they would{{8}} the DNA from the woolly mammoth. Then they would put it into an egg. After that, they would put the egg in an elephant.{{9}} 22 months, a woolly mammoth would be born.<br><br>If it works, other{{10}} animals could be brought back to life, too.", words: ["Would", "on", "scientists", "relative", "Recently", "was found", "copy", "take", "After", "extinct"] },
+            { id: 6, title: "Unit 6. The Clever Octopus", text: "The octopus is a very{{1}} creature.{{2}} similar-sized animals, the octopus has a very big brain. It uses its big brain to do clever things.<br><br>There is one{{3}} octopus named Inky. Inky lived in the National Aquarium{{4}} New Zealand. But it found a way{{5}}. First, it{{6}} out of a small gap at the top of its tank. Then it went down a pipe. Finally, it escaped{{7}} the ocean.<br><br>A group of octopuses at the Seattle Aquarium wanted to{{8}} some fun. They created{{9}} game with a small bottle. They{{10}} and passed the bottle around.<br><br>These examples show us that the octopus is a clever animal.", words: ["clever", "Compared to", "famous", "in", "to escape", "slipped", "into", "have", "a", "took turns"] },
+            { id: 7, title: "Unit 7. How a Frog Grows", text: "The{{1}} of a frog has four{{2}}. It{{3}} with an egg.<br><br>In the spring, a mother frog{{4}} eggs in a pond. She lays{{5}} 4,000 eggs. After{{6}} ten days, a tadpole comes out of each egg. Tadpoles have long tails and look a little like small fish. They have{{7}} so that they can{{8}}. They swim around and eat plants in the pond. But tadpoles don't look like fish for long.<br><br>After about six weeks, they start growing back legs. Then, their front legs grow. Their{{9}} get smaller and their legs get bigger.<br><br>This cycle{{10}} after about fourteen weeks, when the tadpole finally becomes a young frog.", words: ["life cycle", "stages", "starts", "lays", "about", "about", "gills", "breathe underwater", "tails", "ends"] },
+            { id: 8, title: "Unit 8. Snake Skin", text: "When an animal{{1}} their old skin or hair, it is called{{2}}. The way snakes shed their skin is unique.<br><br>Snakes{{3}} all their lives. Their skin does not{{4}} other animals'. So they need to shed their skin to keep growing. Snakes shed their skin in one piece. It{{5}} like a sock.<br><br>The old skin comes off when a{{6}} of new skin grows{{7}}. To shed its skin, the snake{{8}} a rock or a tree to make a{{9}}. Then it uses water to{{10}} get out of the old skin. Sometimes, you can see snakes swim in water.<br><br>This is one of many reasons snakes are interesting creatures.", words: ["loses", "shedding", "grow", "grow like", "looks", "layer", "underneath", "rubs against", "tear", "help"] },
+            { id: 9, title: "Unit 9. Smart Glasses for the Blind", text: "Smart glasses have small computers in them. They tell people about what is{{1}} them. Soon, blind people will be{{2}} buy special smart glasses that help them see.<br><br>Engineers have made smart glasses for people who are{{3}} blind. A camera is put on the smart glasses.{{4}} appear brighter and bigger so that partly blind people can see{{5}}.<br><br>In some smart glasses, a computer voice tells the person what is in front of them. They{{6}} the feelings of the people they see. They say what color{{7}} people are wearing. They can also{{8}}. They can also read signs, menus, and{{9}}.<br><br>Engineers are working on smart glasses for people who are fully{{10}}.", words: ["around", "able to", "partly", "Objects", "better", "describe", "clothes", "recognize faces", "books", "blind"] },
+            { id: 10, title: "Unit 10. Reading with Your Fingers", text: "{{1}}, we read{{2}}. However, not everybody reads this way.<br><br>{{3}} letters, some people read{{4}} dots. This is called{{5}}. These are letters that blind people can read with their fingers.<br><br>Braille was developed{{6}} 1825 by Louis Braille. He became blind when he was a child{{7}} an accident.{{8}} he was blind, he was a good student. He learned about how French{{9}} used 'night writing.' This was how soldiers{{10}} quietly in the dark. Using this idea, Louis created a way for blind people to read and write.<br><br>Today, braille is used around the world.", words: ["Usually", "with our eyes", "Instead of", "raised", "Braille", "in", "because of", "Although", "soldiers", "communicated"] },
+            { id: 11, title: "Unit 11. Stevie Wonder", text: "Stevie Wonder is a famous{{1}}. He sings, writes music, and plays the piano and many other{{2}}. He said that{{3}} blind is not a problem. He learns using other{{4}}. His hearing is amazing.<br><br>One day when he was young, there was a mouse in his classroom. Stevie said that he would{{5}} the mouse. The teacher told everyone{{6}}, so Stevie could{{7}} carefully. Stevie caught the mouse using only his ears.<br><br>This taught him that his{{8}} was fantastic. He started to learn how to play music by listening. Later, he became an{{9}}-winning musician. Stevie may be blind, but{{10}} is not difficult for him.", words: ["musician", "instruments", "being", "senses", "catch", "to be quiet", "listen", "hearing", "award", "life"] },
+            { id: 12, title: "Unit 12. Helen Keller", text: "Helen Keller was{{1}} in 1880. When she was a baby, Helen got very{{2}}. She became both{{3}} and blind.{{4}}, life was not easy for Helen. She didn't know how to{{5}} people. A tutor, Anne Sullivan, started working with Helen. Anne taught Helen how to read and communicate by using her{{6}}. This changed Helen's life.<br><br>Using these new{{7}}, Helen studied hard. She went to Radcliffe College, a famous women's school. She also wrote twelve books,{{8}} The Story of My Life, a book about her life and{{9}}. Helen Keller taught people to{{10}} blind and deaf people.", words: ["born", "sick", "deaf", "As a result", "communicate with", "hands", "skills", "including", "struggles", "help"] },
+            { id: 13, title: "Unit 13. 3D Food Printing", text: "3D food printing is a new way to make food. It is fast and easy.<br><br>Cooking can{{1}} a lot of time and{{2}}. 3D food printers can{{3}} that problem. First, you put{{4}} into the printer. Next, you{{5}}. Then, the 3D printer prints out{{6}} of food that you can eat.<br><br>You can already find 3D food printers in some{{7}} restaurants. People use them to make{{8}} designs for candy, pancakes, and chocolate. There is a 3D printer that uses fresh ingredients. It can make{{9}} foods like pizza,{{10}}, and brownies.<br><br>This new and interesting way of making food can help people save time and effort.", words: ["take", "effort", "solve", "ingredients", "choose a design", "shapes", "fast-food", "creative", "healthy", "cookies"] },
+            { id: 14, title: "Unit 14. Microwave Popcorn", text: "{{1}} you need to make microwave popcorn{{2}}.<br><br>You need a paper bag. It{{3}} not need to be a special bag. A{{4}} brown paper bag is{{5}}. Then you need popcorn kernels. Popcorn kernels are pieces of dried{{6}}.<br><br>Put the kernels in the bag with{{7}} oil and salt.{{8}} the top of the bag a few times. Then put the bag in the microwave for two minutes. You will hear the{{9}} start to pop. When the popping sounds stop, the popcorn is ready.<br><br>The next time you want to eat popcorn at home, try this. It is easy and you can{{10}} this way.", words: ["Here is what", "at home", "does", "plain", "fine", "corn", "a little", "Fold", "kernels", "make it yourself"] },
+            { id: 15, title: "Unit 15. How a Factory Makes Food", text: "People all{{1}} love potato chips. Let's learn about how a plain potato{{2}} into crunchy chips.<br><br>After farmers{{3}} potatoes, they{{4}} the best ones to a factory. Here are the steps that{{5}} factory.<br><br><strong>Step 1.</strong> Machines{{7}} the skins off the potatoes.<br><strong>Step 2.</strong> Blades cut the potatoes into very{{8}} slices.<br><strong>Step 3.</strong> Machines wash and dry the chips.<br><strong>Cooking</strong><br><strong>Step 4.</strong> Robots put the{{9}} in 350-degree oil and cook them for four minutes.<br><strong>Step 5.</strong> The chips go to a different machine in the factory. It adds salt.<br><strong>Step 6.</strong> Machines put the potato chips in bags.", words: ["over the", "turns", "harvest", "send", "happen in a", "(Preparation)", "peel", "thin", "slices", "(Packaging)"] },
+            { id: 16, title: "Unit 16. Number Cakes", text: "Old cookbooks show us when different foods were{{1}}. This is{{2}} know that the first cupcakes were{{3}} 1800.<br><br>Some cookbooks called these first{{4}} 'number cakes.' The name came from the{{5}} to remember the recipe. A person just{{6}} the numbers 1, 2, 3, 4, 1, and 1 to make these cupcakes.<br><br>What do the numbers{{7}} in this recipe? First, the numbers in this recipe mean use one cup of{{8}} and two cups of sugar. Then, put in three cups of{{9}} and four eggs. Last, add one cup of milk and one spoon of baking soda.<br><br>This was one of the first and{{10}} cupcake recipes.", words: ["invented", "how we", "made in", "cupcakes", "easy way", "had to remember", "mean", "butter", "flour", "simplest"] }
         ];
 
         let currentUnitId = 1;
@@ -256,6 +312,7 @@
         const wordBankGrid = document.getElementById('word-bank-grid');
         const themeToggleBtn = document.getElementById('theme-toggle');
         const unitSelectorContainer = document.getElementById('unit-selector-container');
+        const pageIndicator = document.getElementById('page-indicator');
 
         function init() {
             units.forEach(unit => {
@@ -298,6 +355,9 @@
             const unit = units.find(u => u.id === id);
             unitTitle.textContent = unit.title;
             selectedWordElement = null;
+
+            // Update footer page indicator
+            pageIndicator.textContent = `Unit ${id} of ${units.length}`;
 
             let html = unit.text.replace(/\{\{(\d+)\}\}/g, '<span class="blank" data-index="$1"></span>');
             textContent.innerHTML = html;
@@ -363,7 +423,7 @@
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
-            themeToggleBtn.textContent = isDark ? "☀️ Light Mode" : " Dark Mode";
+            themeToggleBtn.textContent = isDark ? "️ Light Mode" : "🌙 Dark Mode";
         }
 
         function copyShareableLink() {
